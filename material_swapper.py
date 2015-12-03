@@ -5,8 +5,7 @@ import sys
 # import maya.standalone
 # maya.standalone.initialize() 
 
-# import maya.cmds as cmds
-
+import maya.cmds as cmds
 import math
 
 
@@ -19,7 +18,16 @@ def generate_camera_points(angle, radius):
 	points = [(radius*(math.cos(i)), radius*(math.sin(i))) for i in angles]
 	return points
 
+def place_cameras(points):
+	for i in points:
+		cmds.camera(centerOfInterest=5, focalLength=35, lensSqueezeRatio=1, cameraScale=1, horizontalFilmAperture=1.41732, horizontalFilmOffset=0, 
+			verticalFilmAperture=0.94488, verticalFilmOffset=0, filmFit="fill", overscan=1, motionBlur=0, shutterAngle=144, nearClipPlane=0.1,
+			farClipPlane=10000, orthographic=0, orthographicWidth=30, panZoomEnabled=0, horizontalPan=0, verticalPan=0, zoom=1)
+		cmds.move(i[0], 5, i[1])
+
+
 
 # material_swapper("Black", "frontsClassics")
 
-print generate_camera_points(6, 17)
+cats = generate_camera_points(6, 17)
+place_cameras(cats)

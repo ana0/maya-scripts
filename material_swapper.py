@@ -9,13 +9,13 @@ import maya.cmds as cmds
 import math
 
 
-# def material_swapper(material, piece):
-#     cmds.select([piece], replace=True)
-#     cmds.sets(e=True, forceElement=material)
+def material_swapper(material, piece):
+    cmds.select([piece], replace=True)
+    cmds.sets(e=True, forceElement=material)
 
 def generate_camera_points(angle, radius):
 	angles = [math.radians(i) for i in range(360) if i % angle == 0]
-	points = [(radius*(math.cos(i)), radius*(math.sin(i)), math.degrees(i)) for i in angles]
+	points = [(radius*(math.cos(i)), radius*(math.sin(i))) for i in angles]
 	return points
 
 def place_cameras(points):
@@ -25,13 +25,15 @@ def place_cameras(points):
 			farClipPlane=10000, orthographic=0, orthographicWidth=30, panZoomEnabled=0, horizontalPan=0, verticalPan=0, zoom=1)
 		cmds.move(i[0], 5.0, i[1])
 		#cmds.rotate(0.0, i[2]+90, 0.0, absolute=True, objectSpace=True, forceOrderXYZ=True)
-		cmds.viewPlace(lookAt=[0, 0, 0])
-
-
+		cmds.viewPlace(lookAt=[0, 3.0, 0])
 
 # material_swapper("Black", "frontsClassics")
 
-cats = generate_camera_points(6, 17)
+def render_all_cameras():
+	cameras = cmds.listCameras(perspective=True)
+	for camera in cameras:
+		cmds.Mayatomr(preview=True, camera=camera)
+
+cats = generate_camera_points(6, 23)
 place_cameras(cats)
-# for i in cats:
-# 	print i
+render_all_cameras()

@@ -32,7 +32,8 @@ def place_cameras(points):
 def render_all_cameras():
 	cameras = cmds.listCameras(perspective=True)
 	for camera in cameras:
-		cmds.Mayatomr(preview=True, camera=camera)
+		if camera != "persp":
+			cmds.Mayatomr(preview=True, camera=camera)
 
 cats = generate_camera_points(6, 23)
 place_cameras(cats)
